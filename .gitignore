@@ -1,0 +1,30 @@
+# Ambientes e dependências locais
+.venv/
+venv/
+.vendor/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Arquivos pessoais, credenciais e referência externa
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.pdf
+.streamlit/secrets.toml
+.vscode/
+.idea/
+
+# Arquivos temporários
+*.log
+*.tmp
+~$*
+Thumbs.db
