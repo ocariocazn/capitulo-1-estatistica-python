@@ -23,7 +23,7 @@ def codigo(*funcoes):
 def grafico_barras(tabela: pd.DataFrame, x: str, y: str, titulo: str):
     figura = px.bar(tabela, x=x, y=y, title=titulo, text_auto=True)
     figura.update_layout(margin=dict(l=10, r=10, t=55, b=10))
-    st.plotly_chart(figura, use_container_width=True)
+    st.plotly_chart(figura, width="stretch")
 
 
 def pagina_11():
@@ -82,7 +82,7 @@ def pagina_12():
     st.metric("Proporção de caras", f"{proporcao:.1%}")
     fig = px.line(lancamentos, x="lançamento", y="proporção acumulada", title="Frequência relativa acumulada de caras")
     fig.add_hline(y=0.5, line_dash="dash", annotation_text="probabilidade teórica 0,5")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.write("A frequência observada pode diferir de 50%. Uma nova simulação com a mesma semente reproduz o mesmo resultado.")
     st.subheader("Inferência: amostra e população")
     populacao = calc.criar_populacao(80)
@@ -136,11 +136,11 @@ def pagina_14():
     if parametros != (n_pop, int(n_amostra), int(semente)):
         st.caption("A seleção anterior está preservada. Clique em 'Selecionar amostra' para aplicar os novos parâmetros.")
     st.write(f"**População delimitada:** {len(populacao)} pessoas fictícias identificadas de P0001 em diante. **Amostra:** {len(amostra)} identificadores únicos.")
-    st.dataframe(amostra, hide_index=True, use_container_width=True)
+    st.dataframe(amostra, hide_index=True, width="stretch")
     compara = calc.composicao(populacao, amostra, "pratica_atividade").reset_index(names="pratica_atividade")
     st.dataframe(compara, hide_index=True)
     fig = px.bar(compara.melt(id_vars="pratica_atividade", var_name="grupo", value_name="%"), x="pratica_atividade", y="%", color="grupo", barmode="group", title="Prática de atividade na população e na amostra")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.write("Diferenças entre percentuais surgem mesmo em sorteios corretos; uma seleção por facilidade pode criar diferenças sistemáticas.")
     codigo(calc.criar_populacao, calc.amostra_aleatoria, calc.composicao)
 
@@ -179,13 +179,13 @@ def pagina_15():
     for nome, (amostra, detalhe) in resultados.items():
         taxa = 100 * (amostra["pratica_atividade"] == "Sim").mean()
         resumo.append({"método": nome, "n": len(amostra), "praticam (%)": round(taxa, 1), "diferença vs população (p.p.)": round(taxa - 100 * (populacao["pratica_atividade"] == "Sim").mean(), 1)})
-    st.dataframe(pd.DataFrame(resumo), hide_index=True, use_container_width=True)
+    st.dataframe(pd.DataFrame(resumo), hide_index=True, width="stretch")
     grafico_barras(pd.DataFrame(resumo), "método", "praticam (%)", "Composição obtida em cada método")
     st.write(f"Na população, **{(populacao['pratica_atividade'] == 'Sim').mean():.1%}** praticam atividade. Nesta realização, os percentuais das amostras variam conforme o método e o acaso.")
     for nome, (amostra, detalhe) in resultados.items():
         with st.expander(f"{nome}: elementos e composição ({len(amostra)})"):
             st.write(detalhe)
-            st.dataframe(amostra, hide_index=True, use_container_width=True)
+            st.dataframe(amostra, hide_index=True, width="stretch")
             st.dataframe(calc.composicao(populacao, amostra).reset_index(names="bairro"), hide_index=True)
     st.warning("Conveniência é não probabilística e pode distorcer a composição. Na sistemática, padrões periódicos na ordem da lista podem coincidir com o passo e produzir viés; examine a ordenação antes do sorteio.")
     codigo(calc.amostra_aleatoria, calc.alocacao_proporcional, calc.amostra_estratificada, calc.amostra_sistematica, calc.amostra_conglomerados, calc.amostra_conveniencia)
@@ -207,7 +207,7 @@ def pagina_16():
     editadas = st.data_editor(st.session_state.pesquisa_original, key="editor_pesquisa", disabled=["id"], num_rows="fixed", hide_index=True)
     auditoria, limpos = calc.apurar_respostas(editadas)
     st.subheader("5. Apuração: original e tratamento")
-    st.dataframe(auditoria, hide_index=True, use_container_width=True)
+    st.dataframe(auditoria, hide_index=True, width="stretch")
     st.write(f"{len(limpos)} resposta(s) válida(s) e {len(auditoria)-len(limpos)} inválida(s). As inválidas continuam na tabela de auditoria.")
     st.subheader("6. Apresentação")
     if limpos.empty:
@@ -265,10 +265,10 @@ def pagina_17():
         separador = " + " if operacao == "Soma" else " × "
         expansao = separador.join(f"({v:g})" for v in tabela["termo"]) if not tabela.empty else ("0" if operacao == "Soma" else "1")
         st.write(f"**Expansão:** {expansao}")
-        st.dataframe(tabela, hide_index=True, use_container_width=True)
+        st.dataframe(tabela, hide_index=True, width="stretch")
         if not tabela.empty:
             fig = px.line(tabela, x="índice i", y="acumulado", markers=True, title=f"{operacao} acumulado(a)")
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
         st.write(f"**Resultado final:** {resultado:g}")
     except (ValueError, OverflowError, ZeroDivisionError) as erro:
         st.error(str(erro))
@@ -279,6 +279,7 @@ def pagina_17():
         st.write("Uma constante em cada fator produz uma potência; em cada parcela da soma, produz c × NT.")
         st.latex(r"\prod_{i=p}^{q}\frac{x_i}{x_{i+1}}=\frac{x_p}{x_{q+1}}")
         st.write("O cancelamento só vale se todos os denominadores necessários forem diferentes de zero. Para a mesma base, o produto de potências soma os expoentes.")
+        st.latex(r"\prod_{i=p}^{q}a^{x_i}=a^{\sum_{i=p}^{q}x_i}")
         st.write("Modelos disponíveis cobrem soma simples, quadrados, termos de duas sequências, constantes, potências e produto telescópico. Entradas livres nunca são executadas como código.")
     st.subheader("Soma parcial e soma infinita")
     c1, c2 = st.columns(2)
@@ -287,7 +288,7 @@ def pagina_17():
     try:
         geometricos, limite = calc.soma_geometrica_parcial(float(razao), termos)
         st.metric("Soma parcial", f"{geometricos['soma parcial'].iloc[-1]:.6g}")
-        st.plotly_chart(px.line(geometricos, x="n", y="soma parcial", markers=True, title="Somas parciais"), use_container_width=True)
+        st.plotly_chart(px.line(geometricos, x="n", y="soma parcial", markers=True, title="Somas parciais"), width="stretch")
         if limite is None:
             st.info("Com |r| ≥ 1, esta série geométrica não converge para uma soma finita.")
         else:
@@ -315,7 +316,7 @@ def main():
     with st.sidebar:
         st.header("Capítulo 1")
         pagina = st.radio("Escolha um tópico", content.TOPICOS)
-        if st.button("Restaurar valores iniciais", use_container_width=True):
+        if st.button("Restaurar valores iniciais", width="stretch"):
             st.session_state.clear()
             st.rerun()
         st.caption("Sorteios só mudam ao clicar nos botões próprios. O PDF não é necessário para executar o programa.")

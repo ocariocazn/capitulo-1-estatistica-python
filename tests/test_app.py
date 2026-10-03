@@ -44,6 +44,8 @@ def test_controles_e_sorteios_preservados():
     at.slider(key="pop_n").set_value(43).run()
     at.button(key="pop_sortear").click().run()
     assert len(at.session_state["pop_resultado"][0]) == 43
+    at.number_input(key="pop_amostra_n").set_value(40).run()
+    at.slider(key="pop_n").set_value(20).run()
     assert not at.exception
 
     at.sidebar.radio[0].set_value(content.TOPICOS[4]).run()

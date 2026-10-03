@@ -35,7 +35,7 @@ python -m pip install -r requirements.txt
 python -m streamlit run app.py
 ```
 
-Se o PowerShell bloquear a ativação, use diretamente `.\.venv\Scripts\python.exe -m pip install -r requirements.txt` e `.\.venv\Scripts\python.exe -m streamlit run app.py`. O endereço local aparece no terminal, normalmente `http://localhost:8501`.
+É necessário ter Python 3.10 ou superior instalado. Se o launcher `py` não estiver disponível, crie o ambiente com `python -m venv .venv` usando um Python real no PATH. O atalho da Microsoft Store, sozinho, não instala o interpretador. Se o PowerShell bloquear a ativação, use diretamente `.\.venv\Scripts\python.exe -m pip install -r requirements.txt` e `.\.venv\Scripts\python.exe -m streamlit run app.py`. O endereço local aparece no terminal, normalmente `http://127.0.0.1:8501`. A configuração em `.streamlit/config.toml` restringe a conexão à própria máquina.
 
 Para rodar os testes:
 

@@ -1,6 +1,6 @@
 # Verificações realizadas
 
-Data: 3 de outubro de 2026. Ambiente de verificação: Windows, Python 3.12 do runtime local. Dependências de interface instaladas em `.vendor/`, pasta ignorada pelo Git; no computador do usuário, siga o ambiente virtual descrito no README.
+Data: 3 de outubro de 2026. Ambiente de verificação: Windows, Python 3.12 do runtime local. As dependências foram instaladas em `.venv/`, ignorado pelo Git. Como esta máquina não tinha `py` nem um Python real no PATH e o runtime incorporado não forneceu `ensurepip`, a criação local usou o executável incorporado e `pip --python .venv`. Em instalações comuns de Python, siga o procedimento do README.
 
 | Verificação | Resultado |
 | --- | --- |
@@ -9,7 +9,7 @@ Data: 3 de outubro de 2026. Ambiente de verificação: Windows, Python 3.12 do r
 | `python -m pytest -q` | 16 testes passaram: cálculos, identidades, entradas inválidas, sorteios e navegação/interações Streamlit. |
 | Navegação por todas as sete páginas com `streamlit.testing.v1.AppTest` | Sem exceções. |
 | Alteração de controles nos tópicos 1.1–1.5 e 1.7 com AppTest | Sem exceções; o sorteio permaneceu igual após alterações não relacionadas e mudou somente no botão. |
-| Inicialização real do servidor Streamlit | Aplicativo abriu em `http://localhost:8501`. O runtime de teste exigiu `--global.developmentMode false`; uma instalação comum pelo README usa o comando padrão. |
+| Inicialização real do servidor Streamlit | Após `& .\.venv\Scripts\Activate.ps1`, o comando exato `python -m streamlit run app.py` abriu o aplicativo. O servidor informou `127.0.0.1:8501`, e a página carregou no navegador. |
 | Inspeção visual no navegador | Menu e conteúdo renderizados; o laboratório 1.7 mostrou Σ de X de 1 a 4 = 20 e soma geométrica parcial de 10 termos ≈ 1,99805. |
 | Edição real da tabela do tópico 1.6 | Ao mudar R01 de 2 para 18, válidas passaram de 7 para 6, inválidas de 1 para 2, e a média de 2,71 para 2,83. Auditoria marcou R01 como inválida. O botão restaurou os dados. |
 
